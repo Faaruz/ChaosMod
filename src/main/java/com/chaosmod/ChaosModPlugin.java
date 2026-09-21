@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -26,8 +27,11 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -43,6 +47,7 @@ public class ChaosModPlugin extends Plugin
 
 	@Inject private Client client;
 	@Inject private ClientThread clientThread;
+	@Inject private ChatMessageManager chatMessageManager;
 	@Inject private ChaosModConfig config;
 	@Inject private OverlayManager overlayManager;
 	@Inject private ChaosModOverlay overlay;
@@ -103,6 +108,36 @@ public class ChaosModPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN && phase == Phase.WAITING && config.autoStart()) scheduleNewRound(1);
 	}
 
+	@Subscribe public void onConfigChanged(ConfigChanged event)
+	{
+		if (!ChaosModConfig.GROUP.equals(event.getGroup()) || !"autoStart".equals(event.getKey()))
+		{
+			return;
+		}
+
+		if (!config.autoStart())
+		{
+			if (phase == Phase.WAITING)
+			{
+				cancelTransition();
+				deadline = Instant.EPOCH;
+			}
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage("<col=ff0000>Chaos Mod warning:</col> Random events can cause deaths. Hardcore Ironmen should enable them only if they accept that risk.")
+				.build());
+			if (phase == Phase.WAITING)
+			{
+				scheduleNewRound(1);
+			}
+		});
+	}
+
 	@Subscribe public void onGameTick(GameTick tick)
 	{
 		if (activeEvent != null)
@@ -135,7 +170,7 @@ public class ChaosModPlugin extends Plugin
 	List<String> getAvailableEventNames()
 	{
 		List<String> names = new ArrayList<>();
-		for (ChaosMod event : ChaosModFactory.createPool(random, config))
+		for (ChaosMod event : ChaosModFactory.createAllEvents(random, config))
 		{
 			names.add(event.getName());
 		}
@@ -147,7 +182,7 @@ public class ChaosModPlugin extends Plugin
 		clientThread.invoke(() ->
 		{
 			ChaosMod selected = null;
-			for (ChaosMod event : ChaosModFactory.createPool(random, config))
+			for (ChaosMod event : ChaosModFactory.createAllEvents(random, config))
 			{
 				if (event.getName().equals(eventName))
 				{
@@ -185,8 +220,14 @@ public class ChaosModPlugin extends Plugin
 	private void startRandomEvent()
 	{
 		cancelTransition();
+		if (!config.autoStart())
+		{
+			phase = Phase.WAITING;
+			deadline = Instant.EPOCH;
+			return;
+		}
 		if (activeEvent != null) activeEvent.stop(client);
-		List<ChaosMod> pool = ChaosModFactory.createPool(random, config);
+		List<ChaosMod> pool = ChaosModFactory.createRandomPool(random, config);
 		if (pool.isEmpty()) return;
 		activeEvent = pool.get(random.nextInt(pool.size()));
 		phase = Phase.ACTIVE; deadline = Instant.now().plusSeconds(activeEvent.getDurationSeconds()); activeEvent.start(client);

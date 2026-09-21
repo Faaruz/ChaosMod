@@ -5,7 +5,7 @@ Random client-side events inspired by chaos mods from other games. While playing
 
 ## Configuration
 
-`Default event duration` is used for every event by default. Each event also has an optional duration override: set it to `0` to inherit the default, or set a number of seconds for that event only. `Time until next event` controls the countdown shown after an event finishes. `Show event tile indicators` is off by default and only enables optional danger/target tiles.
+Random events are off by default because failures can cause a death. Enable them only if you accept that risk, especially on a Hardcore Ironman. `Default event duration` is used for every event by default. Each event also has an optional duration override: set it to `0` to inherit the default, or set a number of seconds for that event only. `Time until next event` controls the countdown shown after an event finishes. The `Random event pool` section lets you include or exclude each event independently. `Show event tile indicators` is off by default and only enables optional danger/target tiles.
 
 
 ## Included events

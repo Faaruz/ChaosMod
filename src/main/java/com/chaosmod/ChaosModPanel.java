@@ -30,12 +30,14 @@ final class ChaosModPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 		content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		content.setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		JLabel title = new JLabel("Chaos Mod Event Tester", SwingConstants.CENTER);
+		title.setForeground(ColorScheme.TEXT_COLOR);
 		title.setAlignmentX(Component.CENTER_ALIGNMENT);
 		title.setMaximumSize(new Dimension(Integer.MAX_VALUE, 28));
 		content.add(title);
@@ -43,6 +45,7 @@ final class ChaosModPanel extends PluginPanel
 
 		JLabel help = new JLabel("<html><center>Start any event immediately.<br>"
 			+ "The current countdown or event will stop.</center></html>", SwingConstants.CENTER);
+		help.setForeground(ColorScheme.TEXT_COLOR);
 		help.setAlignmentX(Component.CENTER_ALIGNMENT);
 		help.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
 		content.add(help);

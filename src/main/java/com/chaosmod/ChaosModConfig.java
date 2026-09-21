@@ -9,8 +9,10 @@ import net.runelite.client.config.Range;
 @ConfigGroup("stream-events")
 public interface ChaosModConfig extends Config
 {
-	@ConfigItem(keyName = "autoStart", name = "Enable random events", description = "Automatically start a random event after each countdown")
-	default boolean autoStart() { return true; }
+	String GROUP = "stream-events";
+
+	@ConfigItem(keyName = "autoStart", name = "Enable random events", description = "Warning: events can cause deaths. Hardcore Ironmen should enable this only if they accept that risk.")
+	default boolean autoStart() { return false; }
 
 	@Range(min = 0, max = 120)
 	@ConfigItem(keyName = "betweenRoundsSeconds", name = "Time until next event", description = "Seconds to wait before the next random event")
@@ -48,5 +50,31 @@ public interface ChaosModConfig extends Config
 	default int coxPortalsSeconds() { return 0; }
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "leviathanSeconds", name = "Leviathan Boulders", description = "0 uses Default event duration", section = eventDurationOverrides)
 	default int leviathanSeconds() { return 0; }
+
+	@ConfigSection(name = "Random event pool", description = "Choose which events can be selected by the random timer", position = 20)
+	String randomEventPool = "randomEventPool";
+
+	@ConfigItem(keyName = "includeBarrels", name = "Exploding Barrels", description = "Include Exploding Barrels in random events", section = randomEventPool)
+	default boolean includeBarrels() { return true; }
+	@ConfigItem(keyName = "includeLightsOut", name = "Lights Out", description = "Include Lights Out in random events", section = randomEventPool)
+	default boolean includeLightsOut() { return true; }
+	@ConfigItem(keyName = "includeJad", name = "Spawn Jad", description = "Include Spawn Jad in random events", section = randomEventPool)
+	default boolean includeJad() { return true; }
+	@ConfigItem(keyName = "includeMeteor", name = "Yama Meteor Shower", description = "Include Yama Meteor Shower in random events", section = randomEventPool)
+	default boolean includeMeteor() { return true; }
+	@ConfigItem(keyName = "includeNoobOutfit", name = "Noob Outfit", description = "Include Noob Outfit in random events", section = randomEventPool)
+	default boolean includeNoobOutfit() { return true; }
+	@ConfigItem(keyName = "includeGiantPlayer", name = "Giant Player", description = "Include Giant Player in random events", section = randomEventPool)
+	default boolean includeGiantPlayer() { return true; }
+	@ConfigItem(keyName = "includeGuitarHero", name = "Guitar Hero", description = "Include Guitar Hero in random events", section = randomEventPool)
+	default boolean includeGuitarHero() { return true; }
+	@ConfigItem(keyName = "includeVardorvis", name = "Vardorvis Captcha", description = "Include Vardorvis Captcha in random events", section = randomEventPool)
+	default boolean includeVardorvis() { return true; }
+	@ConfigItem(keyName = "includeDirtyScreen", name = "Dirty Screen", description = "Include Dirty Screen in random events", section = randomEventPool)
+	default boolean includeDirtyScreen() { return true; }
+	@ConfigItem(keyName = "includeCoxPortals", name = "CoX Portals", description = "Include CoX Portals in random events", section = randomEventPool)
+	default boolean includeCoxPortals() { return true; }
+	@ConfigItem(keyName = "includeLeviathan", name = "Leviathan Boulders", description = "Include Leviathan Boulders in random events", section = randomEventPool)
+	default boolean includeLeviathan() { return true; }
 
 }

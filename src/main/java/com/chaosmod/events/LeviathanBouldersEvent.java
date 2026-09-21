@@ -89,14 +89,6 @@ final class LeviathanBouldersEvent implements ChaosMod
     }
 
     @Override
-    public boolean canStop()
-    {
-        // Let an already-triggered five-second punishment finish even if the
-        // normal event timer expires.
-        return !isPrayerDisabled();
-    }
-
-    @Override
     public void render(Client client, Graphics2D graphics)
     {
         Graphics2D g = (Graphics2D) graphics.create();
