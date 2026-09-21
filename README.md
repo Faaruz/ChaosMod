@@ -1,6 +1,7 @@
 # Chaos Mod
 
-Random client-side RuneLite events for livestreams. A visible countdown starts a randomly selected event; no chat bridge, external service, or voting setup is required.
+Random client-side events inspired by chaos mods from other games. While playing, a random event will occur after a set amount of time, with punishments for failing the event.
+
 
 ## Configuration
 
@@ -21,17 +22,4 @@ Random client-side RuneLite events for livestreams. A visible countdown starts a
 - CoX Portals
 - Leviathan Boulders
 
-## Adding another event
-
-Create the event class in `com.chaosmod.events`, implement `ChaosMod`, then add one instance to `ChaosModFactory.createPool`. Events can independently use lifecycle, game-tick, client-tick, menu-click, and overlay-render hooks without adding event-specific code to `ChaosModPlugin`.
-
-Effects are client-side only and never inject input, send game actions, or affect the game server. Some configured challenges temporarily consume matching local menu clicks as their stated penalty.
-
-## Build and run
-
-```text
-./gradlew clean test
-./gradlew run
-```
-
-Use RuneLite developer mode. Enable random events and set durations in the plugin configuration. The sidebar provides a separate button to test each event immediately.
+If you have ideas for more events please do let me know.
