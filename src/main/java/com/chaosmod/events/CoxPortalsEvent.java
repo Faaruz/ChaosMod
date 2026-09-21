@@ -15,14 +15,6 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuOptionClicked;
 
-/**
- * Olm-style portal challenge.
- *
- * A portal is placed on a collision-reachable tile no more than five tiles
- * from the player. The player has three game ticks to stand on it. Missing a
- * portal blocks inventory interactions for ten seconds. Portal spawning is
- * paused for the entire punishment.
- */
 @Getter
 final class CoxPortalsEvent implements ChaosMod
 {

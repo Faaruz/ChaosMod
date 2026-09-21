@@ -14,18 +14,21 @@ public interface ChaosModConfig extends Config
 	@ConfigItem(keyName = "autoStart", name = "Enable random events", description = "Warning: events can cause deaths. Hardcore Ironmen should enable this only if they accept that risk.")
 	default boolean autoStart() { return false; }
 
+	@ConfigItem(keyName = "showSidebarPanel", name = "Show sidebar panel", description = "Show the Chaos Mod event tester in RuneLite's sidebar")
+	default boolean showSidebarPanel() { return false; }
+
 	@Range(min = 0, max = 120)
 	@ConfigItem(keyName = "betweenRoundsSeconds", name = "Time until next event", description = "Seconds to wait before the next random event")
-	default int betweenRoundsSeconds() { return 10; }
+	default int betweenRoundsSeconds() { return 60; }
 
 	@Range(min = 5, max = 180)
 	@ConfigItem(keyName = "eventSeconds", name = "Default event duration", description = "Used unless that event has its own duration below")
 	default int eventSeconds() { return 30; }
 
 	@ConfigItem(keyName = "showEventTileIndicators", name = "Show event tile indicators", description = "Show optional danger and target tiles for events")
-	default boolean showEventTileIndicators() { return false; }
+	default boolean showEventTileIndicators() { return true; }
 
-	@ConfigSection(name = "Event duration overrides", description = "Set an event to 0 to use the default event duration", position = 10)
+	@ConfigSection(name = "Event duration overrides", description = "Set an event to 0 to use the default event duration", closedByDefault = true, position = 10)
 	String eventDurationOverrides = "eventDurationOverrides";
 
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "barrelsSeconds", name = "Exploding Barrels", description = "0 uses Default event duration", section = eventDurationOverrides)
@@ -51,7 +54,7 @@ public interface ChaosModConfig extends Config
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "leviathanSeconds", name = "Leviathan Boulders", description = "0 uses Default event duration", section = eventDurationOverrides)
 	default int leviathanSeconds() { return 0; }
 
-	@ConfigSection(name = "Random event pool", description = "Choose which events can be selected by the random timer", position = 20)
+	@ConfigSection(name = "Random event pool", description = "Choose which events can be selected by the random timer", closedByDefault = true, position = 20)
 	String randomEventPool = "randomEventPool";
 
 	@ConfigItem(keyName = "includeBarrels", name = "Exploding Barrels", description = "Include Exploding Barrels in random events", section = randomEventPool)

@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import net.runelite.api.Client;
 
-/** Shared drawing helpers for short, centered event status messages. */
 final class EventOverlayUtil
 {
 	private EventOverlayUtil()

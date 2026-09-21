@@ -337,13 +337,6 @@ final class ExplodingBarrelsEvent implements ChaosMod
 		return false;
 	}
 
-	/**
-	 * Checks scene tiles, not raw local-coordinate distance. This matches the
-	 * rendered 3x3 danger area exactly: the barrel's tile plus one tile on each
-	 * side. The current location is always checked, so an entry is caught on the
-	 * first client tick in that area; the previous location also handles a jump
-	 * between client updates.
-	 */
 	private static boolean enteredDangerArea(LocalPoint previous, LocalPoint current, LocalPoint barrel)
 	{
 		return isInDangerArea(current, barrel)

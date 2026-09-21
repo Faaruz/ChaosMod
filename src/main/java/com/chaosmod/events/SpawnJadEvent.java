@@ -134,7 +134,6 @@ final class SpawnJadEvent implements ChaosMod
         if (prayerDisabledUntilTick >= 0 && tick >= prayerDisabledUntilTick)
         {
             prayerDisabledUntilTick = -1;
-            // "tries to hit the player again" immediately after the punishment.
             nextAttackTick = tick;
         }
 

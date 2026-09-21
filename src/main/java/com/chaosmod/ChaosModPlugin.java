@@ -8,7 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
+import javax.imageio.ImageIO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -70,14 +73,8 @@ public class ChaosModPlugin extends Plugin
 		overlayManager.add(eventEffectOverlay);
 		overlayManager.add(eventWidgetOverlay);
 		panel.rebuildEventButtons();
-		navigationButton = NavigationButton.builder()
-			.tooltip("Chaos Mod")
-			.icon(createSidebarIcon())
-			.priority(5)
-			.panel(panel)
-			.build();
-		clientToolbar.addNavigation(navigationButton);
-		if (config.autoStart()) scheduleNewRound(1);
+		updateSidebarPanel();
+		if (config.autoStart()) scheduleNewRound(config.betweenRoundsSeconds());
 		log.info("Chaos Mod started");
 	}
 
@@ -87,11 +84,7 @@ public class ChaosModPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(eventEffectOverlay);
 		overlayManager.remove(eventWidgetOverlay);
-		if (navigationButton != null)
-		{
-			clientToolbar.removeNavigation(navigationButton);
-			navigationButton = null;
-		}
+		removeSidebarPanel();
 		ChaosMod eventToStop = activeEvent;
 		activeEvent = null;
 		phase = Phase.WAITING;
@@ -105,12 +98,21 @@ public class ChaosModPlugin extends Plugin
 
 	@Subscribe public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN && phase == Phase.WAITING && config.autoStart()) scheduleNewRound(1);
+		if (event.getGameState() == GameState.LOGGED_IN && phase == Phase.WAITING && config.autoStart()) scheduleNewRound(config.betweenRoundsSeconds());
 	}
 
 	@Subscribe public void onConfigChanged(ConfigChanged event)
 	{
-		if (!ChaosModConfig.GROUP.equals(event.getGroup()) || !"autoStart".equals(event.getKey()))
+		if (!ChaosModConfig.GROUP.equals(event.getGroup()))
+		{
+			return;
+		}
+		if ("showSidebarPanel".equals(event.getKey()))
+		{
+			updateSidebarPanel();
+			return;
+		}
+		if (!"autoStart".equals(event.getKey()))
 		{
 			return;
 		}
@@ -133,7 +135,7 @@ public class ChaosModPlugin extends Plugin
 				.build());
 			if (phase == Phase.WAITING)
 			{
-				scheduleNewRound(1);
+				scheduleNewRound(config.betweenRoundsSeconds());
 			}
 		});
 	}
@@ -273,7 +275,54 @@ public class ChaosModPlugin extends Plugin
 		transitionTask = null;
 	}
 
+	private void updateSidebarPanel()
+	{
+		if (config.showSidebarPanel())
+		{
+			if (navigationButton == null)
+			{
+				navigationButton = NavigationButton.builder()
+					.tooltip("Chaos Mod")
+					.icon(createSidebarIcon())
+					.priority(5)
+					.panel(panel)
+					.build();
+				clientToolbar.addNavigation(navigationButton);
+			}
+			return;
+		}
+
+		removeSidebarPanel();
+	}
+
+	private void removeSidebarPanel()
+	{
+		if (navigationButton != null)
+		{
+			clientToolbar.removeNavigation(navigationButton);
+			navigationButton = null;
+		}
+	}
+
 	private static BufferedImage createSidebarIcon()
+	{
+		try (InputStream iconStream = ChaosModPlugin.class.getResourceAsStream("/chaos_mod_icon.png"))
+		{
+			BufferedImage icon = iconStream == null ? null : ImageIO.read(iconStream);
+			if (icon != null)
+			{
+				return icon;
+			}
+		}
+		catch (IOException exception)
+		{
+			log.warn("Unable to load Chaos Mod sidebar icon", exception);
+		}
+
+		return createFallbackSidebarIcon();
+	}
+
+	private static BufferedImage createFallbackSidebarIcon()
 	{
 		BufferedImage icon = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = icon.createGraphics();
