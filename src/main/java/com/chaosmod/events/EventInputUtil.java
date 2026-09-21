@@ -4,7 +4,7 @@ import java.util.Locale;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.gameval.InterfaceID;
 
 final class EventInputUtil
 {
@@ -23,7 +23,7 @@ final class EventInputUtil
 			return false;
 		}
 		Widget widget = event.getWidget();
-		if (widget != null && (widget.getId() >>> 16) == WidgetID.PRAYER_GROUP_ID)
+		if (widget != null && (widget.getId() >>> 16) == InterfaceID.PRAYERBOOK)
 		{
 			return true;
 		}
@@ -34,12 +34,12 @@ final class EventInputUtil
 	static boolean isInventoryClick(MenuOptionClicked event)
 	{
 		Widget widget = event.getWidget();
-		if (widget != null && (widget.getId() >>> 16) == WidgetID.INVENTORY_GROUP_ID)
+		if (widget != null && (widget.getId() >>> 16) == InterfaceID.INVENTORY)
 		{
 			return true;
 		}
 		return event.getMenuAction() == MenuAction.WIDGET_TARGET
-			&& (event.getParam1() >>> 16) == WidgetID.INVENTORY_GROUP_ID;
+			&& (event.getParam1() >>> 16) == InterfaceID.INVENTORY;
 	}
 
 	// whatever the player can interact on the world map should be blocked here

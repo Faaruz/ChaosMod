@@ -12,7 +12,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
 
 @Getter
@@ -294,7 +294,7 @@ final class GuitarHeroEvent implements ChaosMod
 	{
 		for (int child = 0; child < PRAYER_WIDGET_SEARCH_LIMIT; child++)
 		{
-			Widget match = findPrayerWidget(client.getWidget(WidgetID.PRAYER_GROUP_ID, child), prayerName);
+			Widget match = findPrayerWidget(client.getWidget(InterfaceID.PRAYERBOOK, child), prayerName);
 			if (match != null)
 			{
 				return match;
