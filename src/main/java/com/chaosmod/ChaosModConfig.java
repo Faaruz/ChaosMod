@@ -11,7 +11,7 @@ public interface ChaosModConfig extends Config
 {
 	String GROUP = "stream-events";
 
-	@ConfigItem(keyName = "autoStart", name = "Enable random events", description = "Warning: events can cause deaths. Hardcore Ironmen should enable this only if they accept that risk.")
+	@ConfigItem(keyName = "autoStart", name = "Enable random events", description = "Enable random events after a countdown")
 	default boolean autoStart() { return false; }
 
 	@ConfigItem(keyName = "showSidebarPanel", name = "Show sidebar panel", description = "Show the Chaos Mod event tester in RuneLite's sidebar")
@@ -41,8 +41,6 @@ public interface ChaosModConfig extends Config
 	default int meteorSeconds() { return 0; }
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "noobOutfitSeconds", name = "Noob Outfit", description = "0 uses Default event duration", section = eventDurationOverrides)
 	default int noobOutfitSeconds() { return 0; }
-	@Range(min = 0, max = 180) @ConfigItem(keyName = "giantPlayerSeconds", name = "Giant Player", description = "0 uses Default event duration", section = eventDurationOverrides)
-	default int giantPlayerSeconds() { return 0; }
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "guitarHeroSeconds", name = "Guitar Hero", description = "0 uses Default event duration", section = eventDurationOverrides)
 	default int guitarHeroSeconds() { return 0; }
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "vardorvisSeconds", name = "Vardorvis Captcha", description = "0 uses Default event duration", section = eventDurationOverrides)
@@ -51,8 +49,6 @@ public interface ChaosModConfig extends Config
 	default int dirtyScreenSeconds() { return 0; }
 	@Range(min = 0, max = 180) @ConfigItem(keyName = "coxPortalsSeconds", name = "CoX Portals", description = "0 uses Default event duration", section = eventDurationOverrides)
 	default int coxPortalsSeconds() { return 0; }
-	@Range(min = 0, max = 180) @ConfigItem(keyName = "leviathanSeconds", name = "Leviathan Boulders", description = "0 uses Default event duration", section = eventDurationOverrides)
-	default int leviathanSeconds() { return 0; }
 
 	@ConfigSection(name = "Random event pool", description = "Choose which events can be selected by the random timer", closedByDefault = true, position = 20)
 	String randomEventPool = "randomEventPool";
@@ -67,8 +63,6 @@ public interface ChaosModConfig extends Config
 	default boolean includeMeteor() { return true; }
 	@ConfigItem(keyName = "includeNoobOutfit", name = "Noob Outfit", description = "Include Noob Outfit in random events", section = randomEventPool)
 	default boolean includeNoobOutfit() { return true; }
-	@ConfigItem(keyName = "includeGiantPlayer", name = "Giant Player", description = "Include Giant Player in random events", section = randomEventPool)
-	default boolean includeGiantPlayer() { return true; }
 	@ConfigItem(keyName = "includeGuitarHero", name = "Guitar Hero", description = "Include Guitar Hero in random events", section = randomEventPool)
 	default boolean includeGuitarHero() { return true; }
 	@ConfigItem(keyName = "includeVardorvis", name = "Vardorvis Captcha", description = "Include Vardorvis Captcha in random events", section = randomEventPool)
@@ -77,7 +71,5 @@ public interface ChaosModConfig extends Config
 	default boolean includeDirtyScreen() { return true; }
 	@ConfigItem(keyName = "includeCoxPortals", name = "CoX Portals", description = "Include CoX Portals in random events", section = randomEventPool)
 	default boolean includeCoxPortals() { return true; }
-	@ConfigItem(keyName = "includeLeviathan", name = "Leviathan Boulders", description = "Include Leviathan Boulders in random events", section = randomEventPool)
-	default boolean includeLeviathan() { return true; }
 
 }

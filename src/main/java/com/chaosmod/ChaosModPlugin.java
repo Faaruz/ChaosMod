@@ -35,6 +35,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -52,6 +53,7 @@ public class ChaosModPlugin extends Plugin
 	@Inject private ClientThread clientThread;
 	@Inject private ChatMessageManager chatMessageManager;
 	@Inject private ChaosModConfig config;
+	@Inject private ConfigManager configManager;
 	@Inject private OverlayManager overlayManager;
 	@Inject private ChaosModOverlay overlay;
 	@Inject private ChaosModEffectOverlay eventEffectOverlay;
@@ -69,6 +71,8 @@ public class ChaosModPlugin extends Plugin
 
 	@Override protected void startUp()
 	{
+		// Make sure autostart is always off when runelite starts so people dont instantly die lol
+		configManager.setConfiguration(ChaosModConfig.GROUP, "autoStart", false);
 		overlayManager.add(overlay);
 		overlayManager.add(eventEffectOverlay);
 		overlayManager.add(eventWidgetOverlay);
@@ -127,17 +131,10 @@ public class ChaosModPlugin extends Plugin
 			return;
 		}
 
-		clientThread.invoke(() ->
+		if (phase == Phase.WAITING)
 		{
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage("<col=ff0000>Chaos Mod warning:</col> Random events can cause deaths. Hardcore Ironmen should enable them only if they accept that risk.")
-				.build());
-			if (phase == Phase.WAITING)
-			{
-				scheduleNewRound(config.betweenRoundsSeconds());
-			}
-		});
+			scheduleNewRound(config.betweenRoundsSeconds());
+		}
 	}
 
 	@Subscribe public void onGameTick(GameTick tick)

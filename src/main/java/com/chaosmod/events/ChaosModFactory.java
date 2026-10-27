@@ -29,12 +29,10 @@ public final class ChaosModFactory
 		add(events, includeDisabledEvents || config.includeJad(), () -> new SpawnJadEvent(duration(config, config.jadSeconds()), random));
 		add(events, includeDisabledEvents || config.includeMeteor(), () -> new YamaMeteorShowerEvent(duration(config, config.meteorSeconds())));
 		add(events, includeDisabledEvents || config.includeNoobOutfit(), () -> new NoobOutfitEvent(duration(config, config.noobOutfitSeconds())));
-		add(events, includeDisabledEvents || config.includeGiantPlayer(), () -> new GiantPlayerEvent(duration(config, config.giantPlayerSeconds())));
 		add(events, includeDisabledEvents || config.includeGuitarHero(), () -> new GuitarHeroEvent(duration(config, config.guitarHeroSeconds()), random));
 		add(events, includeDisabledEvents || config.includeVardorvis(), () -> new VardorvisCaptchaEvent(duration(config, config.vardorvisSeconds()), random));
 		add(events, includeDisabledEvents || config.includeDirtyScreen(), () -> new DirtyScreenEvent(duration(config, config.dirtyScreenSeconds()), random));
 		add(events, includeDisabledEvents || config.includeCoxPortals(), () -> new CoxPortalsEvent(duration(config, config.coxPortalsSeconds()), random));
-		add(events, includeDisabledEvents || config.includeLeviathan(), () -> new LeviathanBouldersEvent(duration(config, config.leviathanSeconds())));
 		return events;
 	}
 
